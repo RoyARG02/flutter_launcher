@@ -36,6 +36,8 @@ class _CommonState extends State<Common> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.white.withOpacity(0.75),
       statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white.withOpacity(0.5),
+      systemNavigationBarIconBrightness: Brightness.dark,
     ));
     _controller = PageController();
   }
