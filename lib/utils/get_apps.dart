@@ -1,33 +1,28 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_launcher/data/app_metadata.dart';
-import 'package:launcher_assist/launcher_assist.dart';
+import 'package:flutter/material.dart';
+
+import 'package:device_apps/device_apps.dart';
+
+import 'package:flutter_launcher/data/static_data.dart';
 
 Future<void> getInstalledApps() {
-  return LauncherAssist.getAllApps().then((data) => addAllApps(data));
-}
-
-void addAllApps(List<dynamic> allApps) {
-  installedApps = sortAppsByName(
-    Iterable<AppMetaData>.generate(
-      allApps.length,
-      (i) => AppMetaData(
-          label: allApps[i]["label"],
-          imageBytes: allApps[i]["icon"],
-          packageName: allApps[i]["package"]),
-    )
-        .where((app) => app.packageName != "com.isocode.flutter_launcher")
-        .toList(),
+  return DeviceApps.getInstalledApplications(includeAppIcons: true).then(
+    (data) => installedApps = sortAppsByName(data),
   );
 }
 
-List<AppMetaData> sortAppsByName(List<AppMetaData> allApps) {
+List<Application> sortAppsByName(List<Application> allApps) {
+  // * Remove launcher package from list of installed apps
+  allApps
+      .removeWhere((app) => app.packageName == "com.isocode.flutter_launcher");
+
   int j;
-  AppMetaData tmp;
+  Application tmp;
   for (int i = 1; i < allApps.length; ++i) {
     j = i - 1;
     tmp = allApps[i];
     while (j > -1 &&
-        tmp.label.toLowerCase().compareTo(allApps[j].label.toLowerCase()) < 0) {
+        tmp.appName.toLowerCase().compareTo(allApps[j].appName.toLowerCase()) <
+            0) {
       allApps[j + 1] = allApps[j];
       j--;
     }

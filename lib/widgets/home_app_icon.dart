@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher/data/app_metadata.dart';
-import 'package:launcher_assist/launcher_assist.dart';
+
+import 'package:device_apps/device_apps.dart';
 
 class HomeAppIcon extends StatelessWidget {
-  final AppMetaData app;
+  final ApplicationWithIcon app;
   HomeAppIcon({this.app});
   @override
   Widget build(BuildContext context) {
@@ -17,14 +17,14 @@ class HomeAppIcon extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Image.memory(
-              app.imageBytes,
+              app.icon,
               height: 96.0,
               width: 96.0,
             ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Text(
-                app.label,
+                app.appName,
                 style: Theme.of(context).accentTextTheme.body2,
                 maxLines: 1,
                 overflow: TextOverflow.fade,
@@ -33,7 +33,7 @@ class HomeAppIcon extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => LauncherAssist.launchApp(app.packageName),
+      onTap: () => DeviceApps.openApp(app.packageName),
     );
   }
 }

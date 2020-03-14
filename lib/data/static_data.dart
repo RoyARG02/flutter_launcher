@@ -1,12 +1,3 @@
-class AppMetaData {
-  final String label;
-  final List<int> imageBytes;
-  final String packageName;
-  AppMetaData({this.label, this.imageBytes, this.packageName});
-  @override
-  String toString() {
-    return '${this.label}: ${this.packageName}';
-  }
-}
+import 'package:device_apps/device_apps.dart';
 
-List<AppMetaData> installedApps;
+List<Application> installedApps;

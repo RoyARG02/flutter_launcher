@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher/data/app_metadata.dart';
-import 'package:launcher_assist/launcher_assist.dart';
+
+import 'package:device_apps/device_apps.dart';
 
 class AllAppsIcon extends StatelessWidget {
-  final AppMetaData app;
+  final ApplicationWithIcon app;
   AllAppsIcon({this.app});
   @override
   Widget build(BuildContext context) {
@@ -22,13 +22,13 @@ class AllAppsIcon extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.memory(
-                app.imageBytes,
+                app.icon,
                 height: 48.0,
                 width: 48.0,
               ),
             ),
             Text(
-              app.label,
+              app.appName,
               style: Theme.of(context).textTheme.subhead,
               maxLines: 1,
               overflow: TextOverflow.fade,
@@ -36,7 +36,7 @@ class AllAppsIcon extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => LauncherAssist.launchApp(app.packageName),
+      onTap: () => DeviceApps.openApp(app.packageName),
     );
   }
 }

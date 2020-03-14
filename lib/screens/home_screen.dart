@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher/data/app_metadata.dart';
+
+import 'package:flutter_launcher/data/static_data.dart';
 import 'package:flutter_launcher/widgets/home_app_icon.dart';
 
 class Home extends StatefulWidget {
-  final VoidCallback _invokeAllApps;
-  Home(this._invokeAllApps);
+  final Function goToApps;
+  Home({this.goToApps});
 
   @override
   _HomeState createState() => _HomeState();
@@ -18,6 +19,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       extendBody: true,
       // extendBodyBehindAppBar: true,
       body: CustomScrollView(
+        physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
         slivers: <Widget>[
           SliverPadding(
             padding:
@@ -43,7 +45,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 alignment: Alignment.centerRight,
                 child: IconButton(
                   icon: Icon(Icons.arrow_forward),
-                  onPressed: widget._invokeAllApps,
+                  onPressed: widget.goToApps,
                 ),
               ),
             ),

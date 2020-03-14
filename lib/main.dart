@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_launcher/screens/all_apps_screen.dart';
 
+import 'package:flutter_launcher/screens/all_apps_screen.dart';
 import 'package:flutter_launcher/screens/home_screen.dart';
 import 'package:flutter_launcher/ui/themes.dart';
 import 'package:flutter_launcher/utils/get_apps.dart';
@@ -15,10 +15,6 @@ void main() async {
 class Root extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ));
     return MaterialApp(
       home: Common(),
       debugShowCheckedModeBanner: false,
@@ -37,6 +33,10 @@ class _CommonState extends State<Common> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white.withOpacity(0.75),
+      statusBarIconBrightness: Brightness.dark,
+    ));
     _controller = PageController();
   }
 
@@ -46,13 +46,8 @@ class _CommonState extends State<Common> {
     super.dispose();
   }
 
-  void gotoAllApps() {
-    _controller.animateToPage(1,
-        duration: Duration(milliseconds: 750), curve: Curves.fastOutSlowIn);
-  }
-
-  void gotoHome() {
-    _controller.animateToPage(0,
+  void _handlePageChange(int newPage) {
+    _controller.animateToPage(newPage,
         duration: Duration(milliseconds: 750), curve: Curves.fastOutSlowIn);
   }
 
@@ -63,8 +58,8 @@ class _CommonState extends State<Common> {
       child: PageView(
         controller: _controller,
         children: <Widget>[
-          Home(gotoAllApps),
-          AllAppsScreen(gotoHome),
+          Home(goToApps: () => this._handlePageChange(1)),
+          AllAppsScreen(goToHome: () => this._handlePageChange(0)),
         ],
       ),
     );
