@@ -25,7 +25,7 @@ class HomeAppIcon extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               child: Text(
                 app.appName,
-                style: Theme.of(context).accentTextTheme.body2,
+                style: Theme.of(context).accentTextTheme.bodyText1,
                 maxLines: 1,
                 overflow: TextOverflow.fade,
               ),

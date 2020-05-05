@@ -29,7 +29,7 @@ class AllAppsIcon extends StatelessWidget {
             ),
             Text(
               app.appName,
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.subtitle1,
               maxLines: 1,
               overflow: TextOverflow.fade,
             )
