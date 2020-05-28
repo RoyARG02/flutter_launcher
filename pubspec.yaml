@@ -9,16 +9,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   device_apps: ^1.0.9
+  flutter_bloc: ^4.0.0
+  hydrated_bloc: ^4.1.0
 
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  test: any
+  flutter_driver:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 
-
 flutter:
-
   uses-material-design: true

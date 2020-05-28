@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+import 'package:flutter_launcher/data/theme_bloc/theme_bloc.dart';
+
 import 'package:flutter_launcher/screens/all_apps_screen.dart';
 import 'package:flutter_launcher/screens/home_screen.dart';
 import 'package:flutter_launcher/ui/themes.dart';
@@ -8,17 +13,30 @@ import 'package:flutter_launcher/utils/get_apps.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  BlocSupervisor.delegate = await HydratedBlocDelegate.build();
   await getInstalledApps();
-  runApp(Root());
+  runApp(
+    BlocProvider<ThemeState>(
+      create: (_) => ThemeState(),
+      child: Root(),
+    ),
+  );
 }
 
 class Root extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Common(),
-      debugShowCheckedModeBanner: false,
-      theme: buildTheme(),
+    return BlocBuilder<ThemeState, bool>(
+      builder: (_, state) {
+        SystemChrome.setSystemUIOverlayStyle(buildSystemOverlayStyle(
+          themeBrightnessIsDark: BlocProvider.of<ThemeState>(context).state,
+        ));
+        return MaterialApp(
+          home: Common(),
+          debugShowCheckedModeBanner: false,
+          theme: buildTheme(themeBrightnessIsDark: state),
+        );
+      },
     );
   }
 }
@@ -33,12 +51,6 @@ class _CommonState extends State<Common> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white.withOpacity(0.75),
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white.withOpacity(0.5),
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
     _controller = PageController();
   }
 
