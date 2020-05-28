@@ -28,13 +28,16 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeState, bool>(
       builder: (_, state) {
-        SystemChrome.setSystemUIOverlayStyle(buildSystemOverlayStyle(
-          themeBrightnessIsDark: BlocProvider.of<ThemeState>(context).state,
-        ));
-        return MaterialApp(
-          home: Common(),
-          debugShowCheckedModeBanner: false,
-          theme: buildTheme(themeBrightnessIsDark: state),
+        print('Rebuild');
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: buildSystemOverlayStyle(
+            isDarkThemeBrightness: BlocProvider.of<ThemeState>(context).state,
+          ),
+          child: MaterialApp(
+            home: Common(),
+            debugShowCheckedModeBanner: false,
+            theme: buildTheme(isDarkThemeBrightness: state),
+          ),
         );
       },
     );

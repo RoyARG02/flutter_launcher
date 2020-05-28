@@ -1,36 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-ThemeData buildTheme({bool themeBrightnessIsDark}) {
-  final Color primaryColor =
-      themeBrightnessIsDark ? Colors.black87 : Colors.white;
-  final Color onPrimaryColor =
-      themeBrightnessIsDark ? Colors.white : Colors.black;
+/// Builds the theme used throughout the app.
+///
+/// The theme is derived from a [primaryColor] and an [accentColor].
+///
+/// [isDarkThemeBrightness] is delegated from [ThemeState.state] bloc,
+/// which is defaultly false.
+///
+/// [primaryColor] is determined by [isDarkThemeBrightness], former
+/// being assumed to be a derivative of [Colors.black] if the latter
+/// is [Brightness.dark], and a derivative of [Colors.white] for
+/// [Brightness.light]. Defaults to either [Colors.black] or
+/// [Colors.white] respectively.
+///
+/// [accentColor] is unaffected by [isDarkThemeBrightness].
+///
+/// The [accentColor] can be supplied with any [Color]. If none is
+/// provided, it defaults to [Colors.blue].
+ThemeData buildTheme({
+  @required bool isDarkThemeBrightness,
+  Color primaryColor,
+  Color accentColor,
+}) {
   return ThemeData.from(
     colorScheme: ColorScheme(
-      brightness: themeBrightnessIsDark ? Brightness.dark : Brightness.light,
-      background: primaryColor,
-      secondary: Colors.blue,
-      error: Colors.red,
-      primary: primaryColor,
-      onBackground: onPrimaryColor,
+      brightness: isDarkThemeBrightness ? Brightness.dark : Brightness.light,
+      primary:
+          primaryColor ?? isDarkThemeBrightness ? Colors.black : Colors.white,
+      onPrimary: isDarkThemeBrightness ? Colors.white : Colors.black,
+      background:
+          primaryColor ?? isDarkThemeBrightness ? Colors.black : Colors.white,
+      onBackground: isDarkThemeBrightness ? Colors.white : Colors.black,
+      secondary: accentColor ?? Colors.blue,
+      onSecondary:
+          ThemeData.estimateBrightnessForColor(accentColor ?? Colors.white) ==
+                  Brightness.dark
+              ? Colors.white
+              : Colors.black,
+      error: Colors.red[700],
       onError: Colors.white,
-      onPrimary: onPrimaryColor,
-      onSecondary: Colors.white,
-      surface: Colors.blue,
-      onSurface: Colors.white,
-      primaryVariant: primaryColor,
-      secondaryVariant: Colors.blue,
+      surface:
+          primaryColor ?? isDarkThemeBrightness ? Colors.black : Colors.white,
+      onSurface: isDarkThemeBrightness ? Colors.white : Colors.black,
+      primaryVariant:
+          primaryColor ?? isDarkThemeBrightness ? Colors.black : Colors.white,
+      secondaryVariant: accentColor ?? Colors.blue,
     ),
   );
 }
 
-SystemUiOverlayStyle buildSystemOverlayStyle({bool themeBrightnessIsDark}){
+SystemUiOverlayStyle buildSystemOverlayStyle({bool isDarkThemeBrightness}) {
   return SystemUiOverlayStyle(
-    statusBarColor: (themeBrightnessIsDark ? Colors.black: Colors.white).withOpacity(0.75),
-      statusBarIconBrightness: themeBrightnessIsDark ? Brightness.light: Brightness.dark,
-      //TODO: Determine whether it is necessary to set the navigation bar color
-      systemNavigationBarColor: (themeBrightnessIsDark ? Colors.black: Colors.white).withOpacity(0.75),
-      systemNavigationBarIconBrightness: themeBrightnessIsDark ? Brightness.light: Brightness.dark,
+    statusBarColor:
+        (isDarkThemeBrightness ? Colors.black : Colors.white).withOpacity(0.75),
+    statusBarIconBrightness:
+        isDarkThemeBrightness ? Brightness.light : Brightness.dark,
+    //TODO: Determine whether it is necessary to set the navigation bar color
+    systemNavigationBarColor:
+        (isDarkThemeBrightness ? Colors.black : Colors.white).withOpacity(0.75),
+    systemNavigationBarIconBrightness:
+        isDarkThemeBrightness ? Brightness.light : Brightness.dark,
   );
 }

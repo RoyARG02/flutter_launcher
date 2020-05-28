@@ -6,9 +6,23 @@ import 'package:flutter_launcher/data/static_data.dart';
 import 'package:flutter_launcher/data/theme_bloc/theme_bloc.dart';
 import 'package:flutter_launcher/widgets/all_apps_icon.dart';
 
-class AllAppsScreen extends StatelessWidget {
+class AllAppsScreen extends StatefulWidget {
   final Function goToHome;
   AllAppsScreen({this.goToHome});
+
+  @override
+  _AllAppsScreenState createState() => _AllAppsScreenState();
+}
+
+class _AllAppsScreenState extends State<AllAppsScreen> {
+  ThemeState _themeStateBloc;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _themeStateBloc = BlocProvider.of<ThemeState>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +35,27 @@ class AllAppsScreen extends StatelessWidget {
               AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           slivers: <Widget>[
             SliverAppBar(
-              brightness: BlocProvider.of<ThemeState>(context).state
-                  ? Brightness.dark
-                  : Brightness.light,
               floating: true,
               snap: true,
               leading: BackButton(
-                onPressed: goToHome,
+                onPressed: widget.goToHome,
               ),
+              actions: <Widget>[
+                PopupMenuButton<String>(
+                  onSelected: (selected) =>
+                      _handleOptionSelect(selected, context),
+                  itemBuilder: (_) {
+                    return _buildAllAppsScreenOptions()
+                        .map(
+                          (String option) => PopupMenuItem<String>(
+                            value: option,
+                            child: Text(option),
+                          ),
+                        )
+                        .toList();
+                  },
+                ),
+              ],
             ),
             SliverPadding(
               padding: EdgeInsets.all(8.0),
@@ -47,5 +74,18 @@ class AllAppsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<String> _buildAllAppsScreenOptions() {
+    return <String>[
+      'Change Theme',
+    ];
+  }
+
+  void _handleOptionSelect(String selected, BuildContext context) {
+    switch (selected) {
+      case 'Change Theme':
+        _themeStateBloc.add(!_themeStateBloc.state);
+    }
   }
 }
