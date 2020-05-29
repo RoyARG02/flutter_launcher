@@ -51,15 +51,16 @@ ThemeData buildTheme({
 }
 
 SystemUiOverlayStyle buildSystemOverlayStyle({bool isDarkThemeBrightness}) {
-  return SystemUiOverlayStyle(
-    statusBarColor:
-        (isDarkThemeBrightness ? Colors.black : Colors.white).withOpacity(0.75),
-    statusBarIconBrightness:
-        isDarkThemeBrightness ? Brightness.light : Brightness.dark,
-    //TODO: Determine whether it is necessary to set the navigation bar color
-    systemNavigationBarColor:
-        (isDarkThemeBrightness ? Colors.black : Colors.white).withOpacity(0.75),
-    systemNavigationBarIconBrightness:
-        isDarkThemeBrightness ? Brightness.light : Brightness.dark,
+  final statusBarColor =
+      (isDarkThemeBrightness ? Colors.black : Colors.white).withOpacity(0.75);
+  //TODO: Determine whether it is necessary to set the navigation bar color
+  final systemNavigationBarColor =
+      isDarkThemeBrightness ? Colors.black : Colors.white;
+  return (isDarkThemeBrightness
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark)
+      .copyWith(
+    statusBarColor: statusBarColor,
+    systemNavigationBarColor: systemNavigationBarColor,
   );
 }

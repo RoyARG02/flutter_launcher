@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -28,16 +27,10 @@ class Root extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeState, bool>(
       builder: (_, state) {
-        print('Rebuild');
-        return AnnotatedRegion<SystemUiOverlayStyle>(
-          value: buildSystemOverlayStyle(
-            isDarkThemeBrightness: BlocProvider.of<ThemeState>(context).state,
-          ),
-          child: MaterialApp(
-            home: Common(),
-            debugShowCheckedModeBanner: false,
-            theme: buildTheme(isDarkThemeBrightness: state),
-          ),
+        return MaterialApp(
+          home: Common(),
+          debugShowCheckedModeBanner: false,
+          theme: buildTheme(isDarkThemeBrightness: state),
         );
       },
     );

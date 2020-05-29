@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_statusbarcolor: ^0.2.3
   device_apps: ^1.0.9
   flutter_bloc: ^4.0.0
   hydrated_bloc: ^4.1.0
